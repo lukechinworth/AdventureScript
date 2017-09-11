@@ -63,3 +63,7 @@ The idea is to build an adventure game from a config file, e.g.
 		}
 	]
 }
+```
+
+## Assets
+Backgrounds are static `jpg`s. Clickable areas are `png`s with transparent backgrounds. Clicks are registered when the png content (as opposed to the transparent background) is clicked, through the magic of [`getImageData`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData).
