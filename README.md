@@ -12,23 +12,41 @@ The idea is to build an adventure game from a config file, e.g.
 			message: 'You find yourself in a room with a chest, and a key in your pocket.',
 			clickables: [
 				{
-					id: 1,
+					image: '/img/clickables/chest.png',
+					use: {
+						id: 1,
+						fail: 'There is a key hole in the front of the chest.'
+					},
+					acquire: 2,
 					x: 100,
 					y: 120
+				},
+				{
+					image: '/img/scenes/start/clickables/door.png',
+					x: 400,
+					y: 220,
+					scene: 2
 				}
 			]
-		}
-	],
-	clickables: [
+		},
 		{
-			id: 1,
-			name: 'chest',
-			image: '/img/clickables/chest.png',
-			use: {
-				id: 1,
-				fail: 'There is a key hole in the front of the chest.'
-			},
-			acquire: 2
+			id: 2,
+			image: '/img/scenes/outside.jpg',
+			name: 'outside',
+			clickables: [
+				{
+					image: '/img/scenes/outside/path_1.png',
+					x: 100,
+					y: 120,
+					scene: 3
+				},
+				{
+					image: '/img/scenes/outside/path_2.png',
+					x: 500,
+					y: 120,
+					scene: 4
+				}
+			]
 		}
 	],
 	items: [
