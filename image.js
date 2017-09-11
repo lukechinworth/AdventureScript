@@ -1,7 +1,8 @@
 export { 
     getImage,
     getImageData,
-    pointIsInImage
+    pointIsInImage,
+    pointIsInImageContent
 };
 
 function getImage(uri) {
@@ -34,9 +35,20 @@ function getImageData(img) {
     return context.getImageData(0, 0, img.width, img.height);
 }
 
+// 100 is the image top left position
 function pointIsInImage(x, y, image) {
     return x > 100
         && x < 100 + image.width
         && y > 100
         && y < 100 + image.height;
+}
+
+function pointIsInImageContent(x, y, imageData) {
+    const imageX = x - 100;
+    const imageY = y - 100;
+    const pixelNumber = (imageY - 1) * imageData.width + imageX;
+    const imageDataIndex = pixelNumber * 4 - 1;
+    const pixelAlphaChannel = imageData.data[imageDataIndex]
+
+    return pixelAlphaChannel > 0
 }

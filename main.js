@@ -1,5 +1,5 @@
 import { scenes, items } from './config.js';
-import { getImage, getImageData, pointIsInImage } from './image.js';
+import { getImage, getImageData, pointIsInImage, pointIsInImageContent } from './image.js';
 
 const FRAMES_PER_SECOND = 30;
 const canvas = document.getElementById('canvas');
@@ -19,13 +19,14 @@ let clickableImage;
 let clickableImageData;
 
 canvas.addEventListener('click', function(e) {
-    const mousePosition = getMousePosition(e);
+    const { x, y } = getMousePosition(e);
 
-    if (pointIsInImage(mousePosition.x, mousePosition.y, clickableImage)) {
-        console.log('clicked in image');
+    if (pointIsInImage(x, y, clickableImage)) {
+
+        if (pointIsInImageContent(x, y, clickableImageData)) {
+            console.log('clicked in content');            
+        }
     }
-
-    console.log('clicked canvas');
 });
 
 // load assets
@@ -38,8 +39,13 @@ Promise.all([
         clickableImage = clickable;
         clickableImageData = getImageData(clickable);
 
-        setInterval(draw, 1000/FRAMES_PER_SECOND)
+        setInterval(loop, 1000/FRAMES_PER_SECOND)
     });
+
+function loop() {
+    // move();
+    draw();
+}
 
 function draw() {    
     context.drawImage(sceneImage, 0, 0);
