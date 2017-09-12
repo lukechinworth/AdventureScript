@@ -5,10 +5,8 @@ export const scenes = [
         clickables: [
             {
                 id: 1,
-                position: {
-                    x: 100, 
-                    y: 100
-                },
+                left: 100,
+                top: 100,
                 acquireItem: 1
             }
         ]
