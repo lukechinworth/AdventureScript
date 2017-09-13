@@ -3,6 +3,7 @@ import {
     getPositionRelativeToCanvas,
     getImageData,
     loadImage,
+    loadSceneImages,
     pointIsInRect,
     pointIsInImageContent
 } from './functions.js';
@@ -12,6 +13,7 @@ const FRAMES_PER_SECOND = 30;
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
 
+/** @type {Scene} */
 let scene = scenes[0];
 
 canvas.addEventListener('click', function(e) {
@@ -20,7 +22,7 @@ canvas.addEventListener('click', function(e) {
     scene.clickables.forEach(c => {
         const left = c.left;
         const top = c.top;
-        const { width, height } = c.image;
+        const { width, height } = c.img;
 
         if (!pointIsInRect({ x, y, left, top, width, height })) {
             return;
@@ -33,22 +35,21 @@ canvas.addEventListener('click', function(e) {
         }
 
         console.log(`clicked ${c.id}`);
+
+        if (c.scene) {
+            const newScene = scenes.find(s => s.id === c.scene);
+
+            loadSceneImages(newScene)
+                .then(() => {
+                    scene = newScene;
+                });
+        }
     });
 });
 
-// load assets
-Promise.all([
-    scene.image,
-    ...scene.clickables.map(c => c.image)
-].map(loadImage))
-    .then(([sceneImage, ...clickableImages]) => {
-        scene.image = sceneImage;
 
-        for (let i = 0; i < scene.clickables.length; i++) {
-            scene.clickables[i].image = clickableImages[i];
-            scene.clickables[i].imageData = getImageData(clickableImages[i]);
-        }
-
+loadSceneImages(scene)
+    .then(() => {
         setInterval(loop, 1000/FRAMES_PER_SECOND)
     });
 
@@ -58,9 +59,9 @@ function loop() {
 }
 
 function draw() {
-    context.drawImage(scene.image, 0, 0);
+    context.drawImage(scene.img, 0, 0);
 
     scene.clickables.forEach(c => {
-        context.drawImage(c.image, c.left, c.top);
+        context.drawImage(c.img, c.left, c.top);
     });
 }

@@ -60,6 +60,20 @@ export const loadImage = uri => new Promise((resolve, reject) => {
     img.src = uri;
 });
 
+// load assets
+export const loadSceneImages = scene => Promise.all([
+    scene.image,
+    ...scene.clickables.map(c => c.image)
+].map(loadImage))
+    .then(([sceneImage, ...clickableImages]) => {
+        scene.img = sceneImage;
+
+        for (let i = 0; i < scene.clickables.length; i++) {
+            scene.clickables[i].img = clickableImages[i];
+            scene.clickables[i].imageData = getImageData(clickableImages[i]);
+        }
+    });
+
 /**
  * @typedef {Object} PointIsInRectArg
  * @property {Number} x
