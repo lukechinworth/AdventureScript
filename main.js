@@ -2,9 +2,9 @@ import { scenes, items } from './config.js';
 import {
     getPositionRelativeToCanvas,
     getImageData,
-    loadImage,    
-    pointIsInRect, 
-    pointIsInImageContent 
+    loadImage,
+    pointIsInRect,
+    pointIsInImageContent
 } from './functions.js';
 
 const FRAMES_PER_SECOND = 30;
@@ -15,25 +15,25 @@ const context = canvas.getContext('2d');
 let scene = scenes[0];
 
 canvas.addEventListener('click', function(e) {
-    const { x, y } = getPositionRelativeToCanvas({ x: e.clientX, y: e.clientY, canvas });    
-    
+    const { x, y } = getPositionRelativeToCanvas({ x: e.clientX, y: e.clientY, canvas });
+
     scene.clickables.forEach(c => {
         const left = c.left;
         const top = c.top;
         const { width, height } = c.image;
-    
+
         if (!pointIsInRect({ x, y, left, top, width, height })) {
             return;
         }
-    
+
         const { data } = c.imageData;
-    
+
         if (!pointIsInImageContent({ x, y, left, top, width, data })) {
             return;
         }
-    
-        console.log(`clicked ${c.id}`); 
-    });           
+
+        console.log(`clicked ${c.id}`);
+    });
 });
 
 // load assets
@@ -61,6 +61,6 @@ function draw() {
     context.drawImage(scene.image, 0, 0);
 
     scene.clickables.forEach(c => {
-        context.drawImage(c.image, c.left, c.top);        
+        context.drawImage(c.image, c.left, c.top);
     });
 }
