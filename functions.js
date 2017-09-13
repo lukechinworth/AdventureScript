@@ -3,11 +3,11 @@
  * @property {Number} x
  * @property {Number} y
  * @property {HTMLCanvasElement} canvas
- * 
+ *
  * @typedef {Object} Position
- * @property {number} x 
+ * @property {number} x
  * @property {number} y
- * 
+ *
  * @returns {Position}
  */
 export const getPositionRelativeToCanvas = (/** @type {getPositionRelativeToCanvasArg} */ { x, y, canvas }) => {
@@ -23,8 +23,8 @@ export const getPositionRelativeToCanvas = (/** @type {getPositionRelativeToCanv
 };
 
 /**
- * @param {Image} img 
- * 
+ * @param {Image} img
+ *
  * @returns {ImageData}
  */
 export const getImageData = img => {
@@ -36,23 +36,23 @@ export const getImageData = img => {
 
     // draw the image on the temporary canvas
     context.drawImage(img, 0, 0);
-    
+
     // pull the entire image into an array of pixel data
     return context.getImageData(0, 0, img.width, img.height);
 };
 
 /**
  * @param {String} uri
- * 
- * @returns {Promise<Image>} 
+ *
+ * @returns {Promise<Image>}
  */
 export const loadImage = uri => new Promise((resolve, reject) => {
     const img = new Image();
-    
+
     img.onload = () => {
         resolve(img);
     };
-    
+
     img.onerror = e => {
         reject(e);
     };
@@ -62,13 +62,13 @@ export const loadImage = uri => new Promise((resolve, reject) => {
 
 /**
  * @typedef {Object} PointIsInRectArg
- * @property {Number} x 
+ * @property {Number} x
  * @property {Number} y
  * @property {Number} left
  * @property {Number} top
  * @property {Number} width
  * @property {Number} height
- * 
+ *
  * @returns {Boolean}
  */
 export const pointIsInRect = (/** @type {PointIsInRectArg} */ { x, y, left, top, width, height }) => x > left
@@ -78,14 +78,14 @@ export const pointIsInRect = (/** @type {PointIsInRectArg} */ { x, y, left, top,
 
 /**
  * @typedef {Object} PointIsInImageContentArg
- * @property {Number} x 
+ * @property {Number} x
  * @property {Number} y
  * @property {Number} left
  * @property {Number} top
  * @property {Number} width
  * @property {Number} height
  * @property {Uint8ClampedArray} data - ImageData
- * 
+ *
  * @returns {Boolean} Opacity is greater than 0
  */
 export const pointIsInImageContent = (/** @type {PointIsInImageContentArg} */ { x, y, left, top, width, data }) => {
@@ -99,11 +99,11 @@ export const pointIsInImageContent = (/** @type {PointIsInImageContentArg} */ { 
 
 /**
  * @typedef {Object} getRelativePositionArg
- * @property {Number} x 
+ * @property {Number} x
  * @property {Number} y
  * @property {Number} width
- * 
- * @returns {Position} 
+ *
+ * @returns {Position}
  */
 function getPositionRelativeToPosition(/** @type {getRelativePositionArg} */ { x, y, left, top }) {
     return {
@@ -114,11 +114,11 @@ function getPositionRelativeToPosition(/** @type {getRelativePositionArg} */ { x
 
 /**
  * @typedef {Object} getImageDataPixelNumberArg
- * @property {Number} x 
+ * @property {Number} x
  * @property {Number} y
  * @property {Number} width
- * 
- * @returns {Number} 
+ *
+ * @returns {Number}
  */
 function getImageDataPixelNumber(/** @type {getImageDataPixelNumberArg} */ { x, y, width }) {
     return (y - 1) * width + x;
@@ -126,9 +126,9 @@ function getImageDataPixelNumber(/** @type {getImageDataPixelNumberArg} */ { x, 
 
 /**
  * @typedef {Object} getImageDataPixelDataArg
- * @property {Number} pixelNumber 
+ * @property {Number} pixelNumber
  * @property {Uint8ClampedArray} data - ImageData
- * 
+ *
  * @returns {Array<Number>} Array representing [r, g, b, a] of desired pixel
  */
 function getImageDataPixelData(/** @type {getImageDataPixelDataArg} */ { pixelNumber, data }) {
@@ -139,7 +139,7 @@ function getImageDataPixelData(/** @type {getImageDataPixelDataArg} */ { pixelNu
 
 /**
  * @param {Array<Number>} pixelData
- * 
+ *
  * @returns {Number} The opacity value of the pixel
  */
 function getPixelOpacity(pixelData) {
