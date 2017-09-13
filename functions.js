@@ -1,7 +1,8 @@
 /**
- * @typedef {Object} getEventPositionOnCanvasArgs
- * @property {Event} e 
- * @property {HTMLElement} canvas
+ * @typedef {Object} getPositionRelativeToCanvasArg
+ * @property {Number} x
+ * @property {Number} y
+ * @property {HTMLCanvasElement} canvas
  * 
  * @typedef {Object} Position
  * @property {number} x 
@@ -9,15 +10,15 @@
  * 
  * @returns {Position}
  */
-export const getEventPositionOnCanvas = (/** @type {getEventPositionOnCanvasArgs} */ { e, canvas }) => {
+export const getPositionRelativeToCanvas = (/** @type {getPositionRelativeToCanvasArg} */ { x, y, canvas }) => {
     const rect = canvas.getBoundingClientRect();
     const root = document.documentElement;
-    const mouseX = e.clientX - rect.left - root.scrollLeft;
-    const mouseY = e.clientY - rect.top - root.scrollTop;
+    const relativeX = x - rect.left - root.scrollLeft;
+    const relativeY = y - rect.top - root.scrollTop;
 
     return {
-        x: mouseX,
-        y: mouseY
+        x: relativeX,
+        y: relativeY
     };
 };
 
@@ -60,7 +61,7 @@ export const loadImage = uri => new Promise((resolve, reject) => {
 });
 
 /**
- * @typedef {Object} PointIsInRectArgs
+ * @typedef {Object} PointIsInRectArg
  * @property {Number} x 
  * @property {Number} y
  * @property {Number} left
@@ -70,29 +71,81 @@ export const loadImage = uri => new Promise((resolve, reject) => {
  * 
  * @returns {Boolean}
  */
-export const pointIsInRect = (/** @type {PointIsInRectArgs} */ { x, y, left, top, width, height }) => x > left
+export const pointIsInRect = (/** @type {PointIsInRectArg} */ { x, y, left, top, width, height }) => x > left
     && x < left + width
     && y > top
     && y < top + height;
 
 /**
- * @typedef {Object} PointIsInImageContentArgs
+ * @typedef {Object} PointIsInImageContentArg
  * @property {Number} x 
  * @property {Number} y
  * @property {Number} left
  * @property {Number} top
  * @property {Number} width
  * @property {Number} height
- * @property {Array<Number>} data - One dimensional array of image pixels, e.g. [r1, g1, b1, a1, r2, g2, ..., a9]
+ * @property {Uint8ClampedArray} data - ImageData
  * 
  * @returns {Boolean} Opacity is greater than 0
  */
-export const pointIsInImageContent = (/** @type {PointIsInImageContentArgs} */ { x, y, left, top, width, data }) => {
-    const imageX = x - left;
-    const imageY = y - top;
-    const pixelNumber = (imageY - 1) * width + imageX;
-    const imageDataIndex = pixelNumber * 4 - 1;
-    const pixelOpacity = data[imageDataIndex];
+export const pointIsInImageContent = (/** @type {PointIsInImageContentArg} */ { x, y, left, top, width, data }) => {
+    const imageXY = getPositionRelativeToPosition({ x, y, left, top });
+    const pixelNumber = getImageDataPixelNumber({ x: imageXY.x, y: imageXY.y, width });
+    const imageDataPixelData = getImageDataPixelData({ pixelNumber, data })
+    const pixelOpacity = getPixelOpacity(imageDataPixelData);
 
-    return pixelOpacity > 0;
+    return isGreaterThanZero(pixelOpacity);
 };
+
+/**
+ * @typedef {Object} getRelativePositionArg
+ * @property {Number} x 
+ * @property {Number} y
+ * @property {Number} width
+ * 
+ * @returns {Position} 
+ */
+function getPositionRelativeToPosition(/** @type {getRelativePositionArg} */ { x, y, left, top }) {
+    return {
+        x: x - left,
+        y: y - top
+    };
+}
+
+/**
+ * @typedef {Object} getImageDataPixelNumberArg
+ * @property {Number} x 
+ * @property {Number} y
+ * @property {Number} width
+ * 
+ * @returns {Number} 
+ */
+function getImageDataPixelNumber(/** @type {getImageDataPixelNumberArg} */ { x, y, width }) {
+    return (y - 1) * width + x;
+}
+
+/**
+ * @typedef {Object} getImageDataPixelDataArg
+ * @property {Number} pixelNumber 
+ * @property {Uint8ClampedArray} data - ImageData
+ * 
+ * @returns {Array<Number>} Array representing [r, g, b, a] of desired pixel
+ */
+function getImageDataPixelData(/** @type {getImageDataPixelDataArg} */ { pixelNumber, data }) {
+    const start = pixelNumber * 4 - 4;
+
+    return data.slice(start, start + 4);
+}
+
+/**
+ * @param {Array<Number>} pixelData
+ * 
+ * @returns {Number} The opacity value of the pixel
+ */
+function getPixelOpacity(pixelData) {
+    return pixelData[3];
+}
+
+function isGreaterThanZero(number) {
+    return number > 0;
+}
