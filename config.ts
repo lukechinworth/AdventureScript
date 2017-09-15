@@ -1,4 +1,6 @@
-export const scenes = [
+import { Scene, Clickable } from './types';
+
+export const scenes: Array<Scene> = [
     {
         id: 1,
         name: 'start',
@@ -36,9 +38,11 @@ export const scenes = [
         ]
     }
 ];
+
 export const items = [
     {
         id: 1,
         name: 'key'
     }
 ];
+

@@ -1,0 +1,23 @@
+{
+  "name": "adventure-script",
+  "version": "1.0.0",
+  "description": "Build an adventure game from a config file",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc main.ts --target es2015"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukechinworth/AdventureScript.git"
+  },
+  "author": "Luke Chinworth",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukechinworth/AdventureScript/issues"
+  },
+  "homepage": "https://github.com/lukechinworth/AdventureScript#readme",
+  "dependencies": {
+    "typescript": "^2.5.2"
+  }
+}
