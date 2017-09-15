@@ -13,9 +13,7 @@ export const getImageData = (img) => {
     const context = canvas.getContext('2d');
     canvas.width = img.width;
     canvas.height = img.height;
-    // draw the image on the temporary canvas
     context.drawImage(img, 0, 0);
-    // pull the entire image into an array of pixel data
     return context.getImageData(0, 0, img.width, img.height);
 };
 export const loadImage = (uri) => new Promise((resolve, reject) => {
@@ -28,10 +26,11 @@ export const loadImage = (uri) => new Promise((resolve, reject) => {
     };
     img.src = uri;
 });
-export const loadSceneImages = (scene) => Promise.all([
+const loadSceneImages = (scene) => Promise.all([
     scene.image,
     ...scene.clickables.map(c => c.image)
-].map(loadImage))
+].map(loadImage));
+export const populateSceneWithImages = (scene) => loadSceneImages(scene)
     .then(([sceneImage, ...clickableImages]) => {
     scene.img = sceneImage;
     for (let i = 0; i < scene.clickables.length; i++) {

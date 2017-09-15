@@ -1,12 +1,11 @@
-import { Scene, Clickable } from './types';
 import { scenes, items } from './config';
 import {
     getPositionRelativeToCanvas,
     getImageData,
     loadImage,
-    loadSceneImages,
     pointIsInRect,
-    pointIsInImageContent
+    pointIsInImageContent,
+    populateSceneWithImages
 } from './functions';
 
 const FRAMES_PER_SECOND: number = 30;
@@ -33,12 +32,10 @@ canvas.addEventListener('click', function(e) {
             return;
         }
 
-        console.log(`clicked ${c.id}`);
-
         if (c.scene) {
             const newScene = scenes.find(s => s.id === c.scene);
 
-            loadSceneImages(newScene)
+            populateSceneWithImages(newScene)
                 .then(() => {
                     scene = newScene;
                 });
@@ -47,7 +44,7 @@ canvas.addEventListener('click', function(e) {
 });
 
 
-loadSceneImages(scene)
+populateSceneWithImages(scene)
     .then(() => {
         setInterval(loop, 1000/FRAMES_PER_SECOND)
     });

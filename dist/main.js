@@ -1,5 +1,5 @@
 import { scenes } from './config.js';
-import { getPositionRelativeToCanvas, loadSceneImages, pointIsInRect, pointIsInImageContent } from './functions.js';
+import { getPositionRelativeToCanvas, pointIsInRect, pointIsInImageContent, populateSceneWithImages } from './functions.js';
 const FRAMES_PER_SECOND = 30;
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
@@ -17,22 +17,20 @@ canvas.addEventListener('click', function (e) {
         if (!pointIsInImageContent({ x, y, left, top, width, data })) {
             return;
         }
-        console.log(`clicked ${c.id}`);
         if (c.scene) {
             const newScene = scenes.find(s => s.id === c.scene);
-            loadSceneImages(newScene)
+            populateSceneWithImages(newScene)
                 .then(() => {
                 scene = newScene;
             });
         }
     });
 });
-loadSceneImages(scene)
+populateSceneWithImages(scene)
     .then(() => {
     setInterval(loop, 1000 / FRAMES_PER_SECOND);
 });
 function loop() {
-    // move();
     draw();
 }
 function draw() {

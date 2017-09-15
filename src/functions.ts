@@ -45,10 +45,12 @@ export const loadImage = (uri: string): Promise<HTMLImageElement> => new Promise
     img.src = uri;
 });
 
-export const loadSceneImages = (scene: Scene):Promise<void> => Promise.all([
+const loadSceneImages = (scene: Scene): Promise<Array<HTMLImageElement>> => Promise.all([
     scene.image,
     ...scene.clickables.map(c => c.image)
-].map(loadImage))
+].map(loadImage));
+
+export const populateSceneWithImages = (scene: Scene): Promise<void> => loadSceneImages(scene)
     .then(([sceneImage, ...clickableImages]) => {
         scene.img = sceneImage;
 
