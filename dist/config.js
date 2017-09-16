@@ -39,6 +39,12 @@ export const scenes = [
 export const items = [
     {
         id: 1,
-        name: 'key'
+        name: 'key',
+        image: 'img/items/key.png'
+    },
+    {
+        id: 2,
+        name: 'hammer',
+        image: 'img/items/hammer.png'
     }
 ];

@@ -13,14 +13,21 @@ export interface Clickable {
 
 export interface Scene {
     id: number;
-    name: string;
+    name?: string;
     image: string;
     img?: HTMLImageElement;
     imageData?: ImageData;
-    clickables: Array<Clickable>;
+    clickables?: Array<Clickable>;
 }
 
 export interface Position {
     x: number;
     y: number;
+}
+
+export interface Item {
+    id: number,
+    name?: string;
+    image: string;
+    img?: HTMLImageElement,
 }

@@ -1,4 +1,4 @@
-import { Scene, Clickable } from './types';
+import { Scene, Clickable, Item } from './types';
 
 export const scenes: Array<Scene> = [
     {
@@ -39,10 +39,16 @@ export const scenes: Array<Scene> = [
     }
 ];
 
-export const items = [
+export const items: Array<Item> = [
     {
         id: 1,
-        name: 'key'
+        name: 'key',
+        image: 'img/items/key.png'
+    },
+    {
+        id: 2,
+        name: 'hammer',
+        image: 'img/items/hammer.png'
     }
 ];
 

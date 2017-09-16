@@ -9,10 +9,15 @@ import {
 } from './functions';
 
 const FRAMES_PER_SECOND: number = 30;
-const canvas = <HTMLCanvasElement> document.getElementById('canvas');
+const root = document.getElementById('root');
+const canvas = document.createElement('canvas');
+canvas.width = 800;
+canvas.height = 600;
+root.appendChild(canvas);
 const context = canvas.getContext('2d');
 
 let scene = scenes[0];
+let inventory: Array<number> = [];
 
 canvas.addEventListener('click', function(e) {
     const { x, y } = getPositionRelativeToCanvas({ x: e.clientX, y: e.clientY, canvas });
@@ -43,18 +48,17 @@ canvas.addEventListener('click', function(e) {
     });
 });
 
-
 populateSceneWithImages(scene)
     .then(() => {
         setInterval(loop, 1000/FRAMES_PER_SECOND)
     });
 
-function loop() {
+function loop(): void {
     // move();
     draw();
 }
 
-function draw() {
+function draw(): void {
     context.drawImage(scene.img, 0, 0);
 
     scene.clickables.forEach(c => {
