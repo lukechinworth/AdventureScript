@@ -16,12 +16,12 @@ export const getImageData = (img) => {
     context.drawImage(img, 0, 0);
     return context.getImageData(0, 0, img.width, img.height);
 };
-export const loadImage = (uri) => new Promise((resolve, reject) => {
+const loadImage = (uri) => new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
         resolve(img);
     };
-    img.onerror = e => {
+    img.onerror = (e) => {
         reject(e);
     };
     img.src = uri;

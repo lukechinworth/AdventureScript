@@ -6,10 +6,10 @@ interface getPositionRelativeToCanvasOptions {
     canvas: HTMLCanvasElement;
 }
 export const getPositionRelativeToCanvas = ({ x, y, canvas }: getPositionRelativeToCanvasOptions): Position => {
-    const rect = canvas.getBoundingClientRect();
-    const root = document.documentElement;
-    const relativeX = x - rect.left - root.scrollLeft;
-    const relativeY = y - rect.top - root.scrollTop;
+    const rect: ClientRect = canvas.getBoundingClientRect();
+    const root: HTMLElement = document.documentElement;
+    const relativeX: number = x - rect.left - root.scrollLeft;
+    const relativeY: number = y - rect.top - root.scrollTop;
 
     return {
         x: relativeX,
@@ -17,9 +17,9 @@ export const getPositionRelativeToCanvas = ({ x, y, canvas }: getPositionRelativ
     };
 };
 
-export const getImageData = (img: HTMLImageElement):ImageData => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+export const getImageData = (img: HTMLImageElement): ImageData => {
+    const canvas: HTMLCanvasElement = document.createElement('canvas');
+    const context: CanvasRenderingContext2D = canvas.getContext('2d');
 
     canvas.width = img.width;
     canvas.height = img.height;
@@ -31,21 +31,21 @@ export const getImageData = (img: HTMLImageElement):ImageData => {
     return context.getImageData(0, 0, img.width, img.height);
 };
 
-export const loadImage = (uri: string): Promise<HTMLImageElement> => new Promise((resolve, reject) => {
-    const img = new Image();
+const loadImage = (uri: string): Promise<HTMLImageElement> => new Promise((resolve: (img: HTMLImageElement) => void, reject: (e: ErrorEvent) => void) => {
+    const img: HTMLImageElement = new Image();
 
     img.onload = () => {
         resolve(img);
     };
 
-    img.onerror = e => {
+    img.onerror = (e: ErrorEvent) => {
         reject(e);
     };
 
     img.src = uri;
 });
 
-const loadSceneImages = (scene: Scene): Promise<Array<HTMLImageElement>> => Promise.all([
+const loadSceneImages = (scene: Scene): Promise<HTMLImageElement[]> => Promise.all([
     scene.image,
     ...scene.clickables.map(c => c.image)
 ].map(loadImage));
@@ -82,10 +82,10 @@ interface PointIsInImageContentOptions {
     data: Uint8ClampedArray;
 }
 export const pointIsInImageContent = ({ x, y, left, top, width, data }: PointIsInImageContentOptions): boolean => {
-    const imageXY = getPositionRelativeToPosition({ x, y, left, top });
-    const pixelNumber = getImageDataPixelNumber({ x: imageXY.x, y: imageXY.y, width });
-    const imageDataPixelData = getImageDataPixelData({ pixelNumber, data })
-    const pixelOpacity = getPixelOpacity(imageDataPixelData);
+    const imageXY: Position = getPositionRelativeToPosition({ x, y, left, top });
+    const pixelNumber: number = getImageDataPixelNumber({ x: imageXY.x, y: imageXY.y, width });
+    const imageDataPixelData: Uint8ClampedArray = getImageDataPixelData({ pixelNumber, data })
+    const pixelOpacity: number = getPixelOpacity(imageDataPixelData);
 
     return isGreaterThanZero(pixelOpacity);
 };
@@ -117,7 +117,7 @@ interface GetImageDataPixelDataOptions {
     data: Uint8ClampedArray;
 }
 function getImageDataPixelData({ pixelNumber, data }: GetImageDataPixelDataOptions): Uint8ClampedArray {
-    const start = pixelNumber * 4 - 4;
+    const start: number = pixelNumber * 4 - 4;
 
     return data.slice(start, start + 4);
 }

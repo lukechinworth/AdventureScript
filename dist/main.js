@@ -1,17 +1,17 @@
 import { scenes } from './config.js';
 import { getPositionRelativeToCanvas, pointIsInRect, pointIsInImageContent, populateSceneWithImages } from './functions.js';
-const FRAMES_PER_SECOND = 30;
 const root = document.getElementById('root');
 const canvas = document.createElement('canvas');
+const context = canvas.getContext('2d');
 canvas.width = 800;
 canvas.height = 600;
 root.appendChild(canvas);
-const context = canvas.getContext('2d');
+const FRAMES_PER_SECOND = 30;
 let scene = scenes[0];
 let inventory = [];
 canvas.addEventListener('click', function (e) {
     const { x, y } = getPositionRelativeToCanvas({ x: e.clientX, y: e.clientY, canvas });
-    scene.clickables.forEach(c => {
+    scene.clickables.forEach((c) => {
         const left = c.left;
         const top = c.top;
         const { width, height } = c.img;
@@ -23,7 +23,7 @@ canvas.addEventListener('click', function (e) {
             return;
         }
         if (c.scene) {
-            const newScene = scenes.find(s => s.id === c.scene);
+            const newScene = scenes.find((s) => s.id === c.scene);
             populateSceneWithImages(newScene)
                 .then(() => {
                 scene = newScene;

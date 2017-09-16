@@ -1,6 +1,6 @@
 import { Scene, Clickable, Item } from './types';
 
-export const scenes: Array<Scene> = [
+export const scenes: Scene[] = [
     {
         id: 1,
         name: 'start',
@@ -39,7 +39,7 @@ export const scenes: Array<Scene> = [
     }
 ];
 
-export const items: Array<Item> = [
+export const items: Item[] = [
     {
         id: 1,
         name: 'key',
