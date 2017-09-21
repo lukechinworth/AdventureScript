@@ -1,12 +1,12 @@
-import { Scene, Clickable, Position } from './types';
-import { scenes, items } from './config';
+import { Scene, Clickable, Position } from './types.js';
+import { scenes, items } from './config.js';
 import {
     getPositionRelativeToCanvas,
     getImageData,
     pointIsInRect,
     pointIsInImageContent,
     populateSceneWithImages
-} from './functions';
+} from './functions.js';
 
 // setup
 const root: HTMLDivElement = document.getElementById('root') as HTMLDivElement;
