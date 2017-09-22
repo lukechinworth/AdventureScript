@@ -1,4 +1,4 @@
-export const getPositionRelativeToCanvas = ({ x, y, canvas }) => {
+export const getPositionRelativeToCanvas = (x, y, canvas) => {
     const rect = canvas.getBoundingClientRect();
     const root = document.documentElement;
     const relativeX = x - rect.left - root.scrollLeft;
@@ -38,27 +38,27 @@ export const populateSceneWithImages = (scene) => loadSceneImages(scene)
         scene.clickables[i].imageData = getImageData(clickableImages[i]);
     }
 });
-export const pointIsInRect = ({ x, y, left, top, width, height }) => x > left
+export const pointIsInRect = (x, y, left, top, width, height) => x > left
     && x < left + width
     && y > top
     && y < top + height;
-export const pointIsInImageContent = ({ x, y, left, top, width, data }) => {
-    const imageXY = getPositionRelativeToPosition({ x, y, left, top });
-    const pixelNumber = getImageDataPixelNumber({ x: imageXY.x, y: imageXY.y, width });
-    const imageDataPixelData = getImageDataPixelData({ pixelNumber, data });
+export const pointIsInImageContent = (x, y, left, top, width, data) => {
+    const imageXY = getPositionRelativeToPosition(x, y, left, top);
+    const pixelNumber = getImageDataPixelNumber(imageXY.x, imageXY.y, width);
+    const imageDataPixelData = getImageDataPixelData(pixelNumber, data);
     const pixelOpacity = getPixelOpacity(imageDataPixelData);
     return isGreaterThanZero(pixelOpacity);
 };
-function getPositionRelativeToPosition({ x, y, left, top }) {
+function getPositionRelativeToPosition(x, y, left, top) {
     return {
         x: x - left,
         y: y - top
     };
 }
-function getImageDataPixelNumber({ x, y, width }) {
+function getImageDataPixelNumber(x, y, width) {
     return (y - 1) * width + x;
 }
-function getImageDataPixelData({ pixelNumber, data }) {
+function getImageDataPixelData(pixelNumber, data) {
     const start = pixelNumber * 4 - 4;
     return data.slice(start, start + 4);
 }

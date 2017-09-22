@@ -1,11 +1,6 @@
 import { Scene, Clickable, Position } from './types';
 
-interface getPositionRelativeToCanvasOptions {
-    x: number;
-    y: number;
-    canvas: HTMLCanvasElement;
-}
-export const getPositionRelativeToCanvas = ({ x, y, canvas }: getPositionRelativeToCanvasOptions): Position => {
+export const getPositionRelativeToCanvas = (x: number, y: number, canvas: HTMLCanvasElement): Position => {
     const rect: ClientRect = canvas.getBoundingClientRect();
     const root: HTMLElement = document.documentElement;
     const relativeX: number = x - rect.left - root.scrollLeft;
@@ -60,63 +55,32 @@ export const populateSceneWithImages = (scene: Scene): Promise<void> => loadScen
         }
     });
 
-interface PointIsInRectOptions {
-    x: number;
-    y: number;
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-}
-export const pointIsInRect = ({ x, y, left, top, width, height }: PointIsInRectOptions): boolean => x > left
+export const pointIsInRect = (x: number, y: number, left: number, top: number, width: number, height: number): boolean => x > left
     && x < left + width
     && y > top
     && y < top + height;
 
-interface PointIsInImageContentOptions {
-    x: number;
-    y: number;
-    left: number;
-    top: number;
-    width: number;
-    data: Uint8ClampedArray;
-}
-export const pointIsInImageContent = ({ x, y, left, top, width, data }: PointIsInImageContentOptions): boolean => {
-    const imageXY: Position = getPositionRelativeToPosition({ x, y, left, top });
-    const pixelNumber: number = getImageDataPixelNumber({ x: imageXY.x, y: imageXY.y, width });
-    const imageDataPixelData: Uint8ClampedArray = getImageDataPixelData({ pixelNumber, data })
+export const pointIsInImageContent = (x: number, y: number, left: number, top: number, width: number, data: Uint8ClampedArray): boolean => {
+    const imageXY: Position = getPositionRelativeToPosition(x, y, left, top);
+    const pixelNumber: number = getImageDataPixelNumber(imageXY.x, imageXY.y, width);
+    const imageDataPixelData: Uint8ClampedArray = getImageDataPixelData(pixelNumber, data);
     const pixelOpacity: number = getPixelOpacity(imageDataPixelData);
 
     return isGreaterThanZero(pixelOpacity);
 };
 
-interface GetRelativePositionOptions {
-    x: number;
-    y: number;
-    left: number;
-    top: number;
-}
-function getPositionRelativeToPosition({ x, y, left, top }: GetRelativePositionOptions): Position {
+function getPositionRelativeToPosition(x: number, y: number, left: number, top: number): Position {
     return {
         x: x - left,
         y: y - top
     };
 }
 
-interface GetImageDataPixelNumberOptions {
-    x: number;
-    y: number;
-    width: number;
-}
-function getImageDataPixelNumber({ x, y, width }: GetImageDataPixelNumberOptions): number {
+function getImageDataPixelNumber(x: number, y: number, width: number): number {
     return (y - 1) * width + x;
 }
 
-interface GetImageDataPixelDataOptions {
-    pixelNumber: number;
-    data: Uint8ClampedArray;
-}
-function getImageDataPixelData({ pixelNumber, data }: GetImageDataPixelDataOptions): Uint8ClampedArray {
+function getImageDataPixelData(pixelNumber: number, data: Uint8ClampedArray): Uint8ClampedArray {
     const start: number = pixelNumber * 4 - 4;
 
     return data.slice(start, start + 4);

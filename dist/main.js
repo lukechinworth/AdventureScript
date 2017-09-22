@@ -10,16 +10,16 @@ const FRAMES_PER_SECOND = 30;
 let scene = scenes[0];
 let inventory = [];
 canvas.addEventListener('click', function (e) {
-    const { x, y } = getPositionRelativeToCanvas({ x: e.clientX, y: e.clientY, canvas });
+    const { x, y } = getPositionRelativeToCanvas(e.clientX, e.clientY, canvas);
     scene.clickables.forEach((c) => {
         const left = c.left;
         const top = c.top;
         const { width, height } = c.img;
-        if (!pointIsInRect({ x, y, left, top, width, height })) {
+        if (!pointIsInRect(x, y, left, top, width, height)) {
             return;
         }
         const { data } = c.imageData;
-        if (!pointIsInImageContent({ x, y, left, top, width, data })) {
+        if (!pointIsInImageContent(x, y, left, top, width, data)) {
             return;
         }
         if (c.scene) {

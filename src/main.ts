@@ -25,20 +25,20 @@ let scene: Scene = scenes[0];
 let inventory: number[] = [];
 
 canvas.addEventListener('click', function(e) {
-    const { x, y }: Position = getPositionRelativeToCanvas({ x: e.clientX, y: e.clientY, canvas });
+    const { x, y }: Position = getPositionRelativeToCanvas(e.clientX, e.clientY, canvas);
 
     scene.clickables.forEach((c: Clickable) => {
         const left: number = c.left;
         const top: number = c.top;
         const { width, height }: HTMLImageElement = c.img;
 
-        if (!pointIsInRect({ x, y, left, top, width, height })) {
+        if (!pointIsInRect(x, y, left, top, width, height)) {
             return;
         }
 
         const { data }: ImageData = c.imageData;
 
-        if (!pointIsInImageContent({ x, y, left, top, width, data })) {
+        if (!pointIsInImageContent(x, y, left, top, width, data)) {
             return;
         }
 
