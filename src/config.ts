@@ -1,21 +1,6 @@
-/**
- * @typedef {Object} Clickable
- * @property {Number} id
- * @property {String} image
- * @property {Number} left
- * @property {Number} top
- * @property {String} message Message that appears when clicked
- * @property {Number} item Id of item acquired when clicked
- * @property {Number} scene Id of scene to go to when clicked
- *
- * @typedef {Object} Scene
- * @property {Number} id
- * @property {String} name
- * @property {String} image
- * @property {Array<Clickable>} clickables
- */
-/** @type {Array<Scene>} */
-export const scenes = [
+import { Scene, Clickable, Item } from './types';
+
+export const scenes: Scene[] = [
     {
         id: 1,
         name: 'start',
@@ -54,10 +39,16 @@ export const scenes = [
     }
 ];
 
-export const items = [
+export const items: Item[] = [
     {
         id: 1,
-        name: 'key'
+        name: 'key',
+        image: 'img/items/key.png'
+    },
+    {
+        id: 2,
+        name: 'hammer',
+        image: 'img/items/hammer.png'
     }
 ];
 
