@@ -55,12 +55,13 @@ canvas.addEventListener('click', function(e) {
 
 populateSceneWithImages(scene)
     .then(() => {
-        setInterval(loop, 1000/FRAMES_PER_SECOND)
+        requestAnimationFrame(loop);
     });
 
 function loop(): void {
     // move();
     draw();
+    requestAnimationFrame(loop);
 }
 
 function draw(): void {
